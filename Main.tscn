@@ -1,0 +1,148 @@
+[gd_scene load_steps=14 format=3 uid="uid://ccyt44toeiksg"]
+
+[ext_resource type="PackedScene" uid="uid://b68umguhxojc4" path="res://Player.tscn" id="1_sqd3l"]
+[ext_resource type="Script" path="res://DebugText.gd" id="2"]
+[ext_resource type="Script" path="res://Camera2D.gd" id="3"]
+[ext_resource type="Script" path="res://DebugVector.gd" id="3_ctnmf"]
+[ext_resource type="Script" path="res://DebugText2.gd" id="3_kfe6f"]
+[ext_resource type="Script" path="res://Dummy.gd" id="4_m84gs"]
+[ext_resource type="PackedScene" uid="uid://1rwl3ap70c7p" path="res://SplashText.tscn" id="5_nfn67"]
+[ext_resource type="Texture2D" uid="uid://dsdvcxk4g4yi3" path="res://dummy.png" id="6_expm7"]
+[ext_resource type="Texture2D" uid="uid://bm2he8lqutgef" path="res://bg-back.png" id="8_jmuxi"]
+[ext_resource type="Texture2D" uid="uid://blgy3trnwfhuj" path="res://bg-light.png" id="9_woec7"]
+[ext_resource type="Texture2D" uid="uid://deo027oklluei" path="res://bg-fore.png" id="10_ukf5i"]
+
+[sub_resource type="RectangleShape2D" id="4"]
+
+[sub_resource type="RectangleShape2D" id="3"]
+size = Vector2(49, 64)
+
+[node name="Main" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_sqd3l")]
+
+[node name="DebugLayer" type="CanvasLayer" parent="."]
+
+[node name="DebugText" type="CanvasLayer" parent="DebugLayer"]
+script = ExtResource("2")
+
+[node name="Speedometer" type="Label" parent="DebugLayer/DebugText"]
+offset_right = 64.0
+offset_bottom = 40.0
+text = "SPEED"
+
+[node name="Timer" type="Timer" parent="DebugLayer/DebugText"]
+
+[node name="DamageText" type="CanvasLayer" parent="DebugLayer"]
+
+[node name="DebugText2" type="CanvasLayer" parent="DebugLayer"]
+script = ExtResource("3_kfe6f")
+
+[node name="Monitor" type="Label" parent="DebugLayer/DebugText2"]
+offset_top = 25.0
+offset_right = 40.0
+offset_bottom = 48.0
+
+[node name="DebugVector" type="Node2D" parent="."]
+visible = false
+script = ExtResource("3_ctnmf")
+
+[node name="LinearVector" type="Line2D" parent="DebugVector"]
+points = PackedVector2Array(0, 0, 0, 0)
+width = 2.0
+default_color = Color(0, 0.282353, 1, 1)
+
+[node name="AddVector" type="Line2D" parent="DebugVector"]
+points = PackedVector2Array(0, 0, 0, 0)
+width = 2.0
+default_color = Color(1, 0, 0, 1)
+
+[node name="Target" type="Node" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Target"]
+position = Vector2(128, 64)
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Target/StaticBody2D"]
+shape = SubResource("4")
+
+[node name="Polygon2D" type="Polygon2D" parent="Target/StaticBody2D"]
+polygon = PackedVector2Array(-10, -10, 10, -10, 10, 10, -10, 10)
+
+[node name="DampedSpringJoint2D" type="DampedSpringJoint2D" parent="Target/StaticBody2D"]
+node_a = NodePath("..")
+node_b = NodePath("../../Dummy")
+length = 62.0
+rest_length = 1.0
+stiffness = 64.0
+
+[node name="Dummy" type="RigidBody2D" parent="Target"]
+position = Vector2(128, 160)
+mass = 3.06122
+max_contacts_reported = 1
+contact_monitor = true
+linear_damp = 1.0
+script = ExtResource("4_m84gs")
+SplashObj = ExtResource("5_nfn67")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Target/Dummy"]
+shape = SubResource("3")
+
+[node name="Polygon2D" type="Polygon2D" parent="Target/Dummy"]
+visible = false
+polygon = PackedVector2Array(-24, -32, 24, -32, 24, 32, -24, 32)
+
+[node name="Sprite2D" type="Sprite2D" parent="Target/Dummy"]
+position = Vector2(-0.465, 1.08)
+scale = Vector2(0.130208, 0.130208)
+texture = ExtResource("6_expm7")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="Target"]
+position = Vector2(128, 64)
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Target/StaticBody2D2"]
+shape = SubResource("4")
+
+[node name="Polygon2D" type="Polygon2D" parent="Target/StaticBody2D2"]
+position = Vector2(0, 192)
+polygon = PackedVector2Array(-10, -10, 10, -10, 10, 10, -10, 10)
+
+[node name="DampedSpringJoint2D" type="DampedSpringJoint2D" parent="Target/StaticBody2D2"]
+position = Vector2(0, 192)
+rotation = 3.14159
+node_a = NodePath("..")
+node_b = NodePath("../../Dummy")
+length = 62.0
+rest_length = 1.0
+stiffness = 64.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(224, 224)
+zoom = Vector2(1.9, 1.9)
+script = ExtResource("3")
+
+[node name="Background" type="Node2D" parent="Camera2D"]
+scale = Vector2(0.288739, 0.288739)
+
+[node name="Back" type="Sprite2D" parent="Camera2D/Background"]
+z_index = -10
+texture = ExtResource("8_jmuxi")
+
+[node name="Light" type="Sprite2D" parent="Camera2D/Background"]
+visible = false
+z_index = 2
+texture = ExtResource("9_woec7")
+
+[node name="Fore" type="Sprite2D" parent="Camera2D/Background"]
+z_index = 10
+texture = ExtResource("10_ukf5i")
+
+[connection signal="dash" from="Player" to="DebugLayer/DebugText" method="_on_Player_dash"]
+[connection signal="debug" from="Player" to="DebugLayer/DebugText2" method="_on_player_debug"]
+[connection signal="speed" from="Player" to="DebugLayer/DebugText" method="_on_Player_speed"]
+[connection signal="vector" from="Player" to="DebugVector" method="_on_Player_vector"]
+[connection signal="timeout" from="DebugLayer/DebugText/Timer" to="DebugLayer/DebugText" method="_on_Timer_timeout"]
+[connection signal="body_entered" from="Target/Dummy" to="Target/Dummy" method="_on_body_entered"]

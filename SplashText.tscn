@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://1rwl3ap70c7p"]
+
+[ext_resource type="Script" path="res://SplashText.gd" id="1_rfth3"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_35f4e"]
+font_size = 32
+font_color = Color(1, 0, 0, 0.545098)
+shadow_color = Color(0, 0, 0, 0.266667)
+
+[node name="SplashText" type="CanvasLayer"]
+follow_viewport_enabled = true
+script = ExtResource("1_rfth3")
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Text" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Hit"
+label_settings = SubResource("LabelSettings_35f4e")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
