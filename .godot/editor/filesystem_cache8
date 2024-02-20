@@ -1,5 +1,5 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1708201343
+::res://::1708448829
 bg-back.png::CompressedTexture2D::3284858919851939133::1707591868::1707591868::1::::<><>::
 bg-fore.png::CompressedTexture2D::7470486558286839336::1707591868::1707591868::1::::<><>::
 bg-light.png::CompressedTexture2D::3172392465117141173::1707591868::1707591868::1::::<><>::
@@ -9,15 +9,15 @@ chain_link_2.png::CompressedTexture2D::440915795879349124::1708201336::170820134
 DebugText2.gd::GDScript::-1::1707678252::0::1::::<>CanvasLayer<>::
 DebugText.gd::GDScript::-1::1707427653::0::1::::<>CanvasLayer<>::
 DebugVector.gd::GDScript::-1::1707427662::0::1::::<>Node2D<>::
-default_env.tres::Environment::2934118960012125992::1708201309::0::1::::<><>::
+default_env.tres::Environment::2934118960012125992::1708294562::0::1::::<><>::
 Dummy.gd::GDScript::-1::1707591536::0::1::::<>RigidBody2D<>::
 dummy.png::CompressedTexture2D::8430134223073881588::1707415325::1707415326::1::::<><>::
 export_presets.cfg::TextFile::-1::1672571342::0::1::::<><>::
 hammer.png::CompressedTexture2D::1406159385708098211::1707010981::1707010982::1::::<><>::
 icon.png::CompressedTexture2D::2786018741785224125::1672530768::1706236289::1::::<><>::
-Main.tscn::PackedScene::4963971084815712274::1708201309::0::1::::<><>::uid://b68umguhxojc4::::res://Player.tscn<>res://DebugText.gd<>res://Camera2D.gd<>res://DebugVector.gd<>res://DebugText2.gd<>res://Dummy.gd<>uid://1rwl3ap70c7p::::res://SplashText.tscn<>uid://dsdvcxk4g4yi3::::res://dummy.png<>uid://bm2he8lqutgef::::res://bg-back.png<>uid://blgy3trnwfhuj::::res://bg-light.png<>uid://deo027oklluei::::res://bg-fore.png
-Player.gd::GDScript::-1::1708195256::0::1::::<>RigidBody2D<>::
-Player.tscn::PackedScene::4631635418123799237::1708201297::0::1::::<><>::res://Player.gd<>uid://dtt71ieqvwkik::::res://pod.png<>uid://ubfifa21byjj::::res://hammer.png<>uid://c4kxvb3spmd1k::::res://jetflame/frame0000.png<>uid://didso24dqdwde::::res://jetflame/frame0001.png<>uid://c2mop6hni4u8d::::res://jetflame/frame0002.png<>uid://djk0aeyj1dqag::::res://jetflame/frame0003.png<>uid://dxw6xk38o2sex::::res://jetflame/frame0004.png<>uid://c5ii3sjyn5vx4::::res://jetflame/frame0005.png<>uid://bqcnj4rh430e3::::res://jetflame/frame0006.png<>uid://wxnwcdxcylkd::::res://jetflame/frame0007.png
+Main.tscn::PackedScene::4963971084815712274::1708294562::0::1::::<><>::uid://b68umguhxojc4::::res://Player.tscn<>res://DebugText.gd<>res://Camera2D.gd<>res://DebugVector.gd<>res://DebugText2.gd<>res://Dummy.gd<>uid://1rwl3ap70c7p::::res://SplashText.tscn<>uid://dsdvcxk4g4yi3::::res://dummy.png<>uid://bm2he8lqutgef::::res://bg-back.png<>uid://blgy3trnwfhuj::::res://bg-light.png<>uid://deo027oklluei::::res://bg-fore.png<>uid://cu0f3vei0iwys::::res://chain_link_1.png<>uid://gjt23p0dv2km::::res://chain_link_2.png
+Player.gd::GDScript::-1::1708294562::0::1::::<>RigidBody2D<>::
+Player.tscn::PackedScene::4631635418123799237::1708294562::0::1::::<><>::res://Player.gd<>uid://dtt71ieqvwkik::::res://pod.png<>uid://ubfifa21byjj::::res://hammer.png<>uid://c4kxvb3spmd1k::::res://jetflame/frame0000.png<>uid://didso24dqdwde::::res://jetflame/frame0001.png<>uid://c2mop6hni4u8d::::res://jetflame/frame0002.png<>uid://djk0aeyj1dqag::::res://jetflame/frame0003.png<>uid://dxw6xk38o2sex::::res://jetflame/frame0004.png<>uid://c5ii3sjyn5vx4::::res://jetflame/frame0005.png<>uid://bqcnj4rh430e3::::res://jetflame/frame0006.png<>uid://wxnwcdxcylkd::::res://jetflame/frame0007.png
 pod.png::CompressedTexture2D::8534063059061033538::1707076224::1707076224::1::::<><>::
 SplashText.gd::GDScript::-1::1707429309::0::1::::<>CanvasLayer<>::
 SplashText.tscn::PackedScene::1861361245360758399::1708032469::0::1::::<><>::res://SplashText.gd
