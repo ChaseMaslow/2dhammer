@@ -69,6 +69,8 @@ position = Vector2(72, 60)
 [node name="Chain" type="Node2D" parent="Target"]
 
 [node name="Base" type="StaticBody2D" parent="Target/Chain"]
+collision_layer = 2
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Target/Chain/Base"]
 shape = SubResource("RectangleShape2D_6bvuu")
@@ -85,6 +87,8 @@ node_b = NodePath("../../Link")
 
 [node name="Link" type="RigidBody2D" parent="Target/Chain"]
 position = Vector2(0, 6)
+collision_layer = 2
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Target/Chain/Link"]
 shape = SubResource("RectangleShape2D_f8gre")
@@ -101,6 +105,8 @@ node_b = NodePath("../../Link2")
 
 [node name="Link2" type="RigidBody2D" parent="Target/Chain"]
 position = Vector2(0, 12)
+collision_layer = 2
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Target/Chain/Link2"]
 position = Vector2(-0.1875, 0)
@@ -118,6 +124,8 @@ node_b = NodePath("../../Link3")
 
 [node name="Link3" type="RigidBody2D" parent="Target/Chain"]
 position = Vector2(0, 18)
+collision_layer = 2
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Target/Chain/Link3"]
 shape = SubResource("RectangleShape2D_f8gre")
@@ -135,6 +143,8 @@ node_b = NodePath("../../Link4")
 
 [node name="Link4" type="RigidBody2D" parent="Target/Chain"]
 position = Vector2(0, 25)
+collision_layer = 2
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Target/Chain/Link4"]
 position = Vector2(-0.1875, 0)
@@ -153,6 +163,8 @@ node_b = NodePath("../../Link5")
 
 [node name="Link5" type="RigidBody2D" parent="Target/Chain"]
 position = Vector2(0, 32)
+collision_layer = 2
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Target/Chain/Link5"]
 shape = SubResource("RectangleShape2D_f8gre")
@@ -170,6 +182,8 @@ node_b = NodePath("../../Link6")
 
 [node name="Link6" type="RigidBody2D" parent="Target/Chain"]
 position = Vector2(0, 39)
+collision_layer = 2
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Target/Chain/Link6"]
 position = Vector2(-0.1875, 0)
@@ -188,6 +202,8 @@ node_b = NodePath("../../Link7")
 
 [node name="Link7" type="RigidBody2D" parent="Target/Chain"]
 position = Vector2(0, 46)
+collision_layer = 2
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Target/Chain/Link7"]
 shape = SubResource("RectangleShape2D_f8gre")
@@ -224,26 +240,27 @@ position = Vector2(-0.465, 1.08)
 scale = Vector2(0.130208, 0.130208)
 texture = ExtResource("6_expm7")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Background" type="Node2D" parent="."]
 position = Vector2(224, 224)
-zoom = Vector2(1.9, 1.9)
-script = ExtResource("3")
-
-[node name="Background" type="Node2D" parent="Camera2D"]
 scale = Vector2(0.288739, 0.288739)
 
-[node name="Back" type="Sprite2D" parent="Camera2D/Background"]
+[node name="Back" type="Sprite2D" parent="Background"]
 z_index = -10
 texture = ExtResource("8_jmuxi")
 
-[node name="Light" type="Sprite2D" parent="Camera2D/Background"]
+[node name="Light" type="Sprite2D" parent="Background"]
 visible = false
 z_index = 2
 texture = ExtResource("9_woec7")
 
-[node name="Fore" type="Sprite2D" parent="Camera2D/Background"]
+[node name="Fore" type="Sprite2D" parent="Background"]
 z_index = 10
 texture = ExtResource("10_ukf5i")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(224, 224)
+zoom = Vector2(1.9, 1.9)
+script = ExtResource("3")
 
 [connection signal="dash" from="Player" to="DebugLayer/DebugText" method="_on_Player_dash"]
 [connection signal="debug" from="Player" to="DebugLayer/DebugText2" method="_on_player_debug"]
