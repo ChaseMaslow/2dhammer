@@ -39,11 +39,13 @@ func _ready():
 #	emit_signal("debug", transform)
 
 func _integrate_forces(_state):
+	var add_velocity = Vector2.ZERO
+	var add_angular_velocity = 0
 	if in_control == true:
 		# make linear velocity more like the requested velocity
 #		var requested_velocity = (mouse_delta * base_speed)
 #		var add_velocity = (requested_velocity - get_linear_velocity()).limit_length(max_speed)
-		var add_velocity = (mouse_delta * base_speed).limit_length(max_speed)
+		add_velocity = (mouse_delta * base_speed).limit_length(max_speed)
 		current_speed = add_velocity.length()
 		if current_speed == max_speed:
 			if dash_ready == true:
@@ -62,72 +64,110 @@ func _integrate_forces(_state):
 		
 		#var tilt_degrees = (add_velocity.x / max_speed) * TILT_ANGLE_DEGREES
 		var tilt = get_angle_to(to_global(add_velocity)) + PI/2
-		var add_angular_velocity = angle_difference(rotation, tilt) * TILT_VELOCITY
+		add_angular_velocity = angle_difference(rotation, tilt) * TILT_VELOCITY
 		
-		var jet_vector = Vector2()
-		jet_vector.x = (transform.x*add_velocity).x + (transform.x*add_velocity).y
-		jet_vector.y = (transform.y*add_velocity).x + (transform.y*add_velocity).y
+	var jet_vector = Vector2()
+	jet_vector.x = (transform.x*add_velocity).x + (transform.x*add_velocity).y
+	jet_vector.y = (transform.y*add_velocity).x + (transform.y*add_velocity).y
+	
+	emit_signal("vector", position, linear_velocity, jet_vector)
+	
+	linear_velocity += add_velocity
+	angular_velocity += add_angular_velocity
+	
+	emit_signal("debug", str(jet_vector.x) + "\n" + str(jet_vector.y))
 		
-		emit_signal("vector", position, linear_velocity, jet_vector)
-		
-		linear_velocity += add_velocity
-		angular_velocity += add_angular_velocity
-		
-		emit_signal("debug", str(jet_vector.x) + "\n" + str(jet_vector.y))
-		
-		#control jet effects
-		
-		var t = Transform2D()
-		if jet_vector.y > 0:
-			t.x *= 0
-			t.y *= 0
-		else:
-			t.x *= -jet_vector.y * 0.001 + 0.045
-			t.y *= -jet_vector.y * 0.001 + 0.045
-		t.origin = $MainJet.transform.origin
-		$MainJet.transform = t
-		
-		t = Transform2D()
-		if jet_vector.y < 0:
-			t.x *= 0
-			t.y *= 0
-		else:
-			t.x *= jet_vector.y * 0.001
-			t.y *= -jet_vector.y * 0.001
-		t.origin = $TopLeftJet.transform.origin
-		$TopLeftJet.transform = t
-		t.origin = $TopRightJet.transform.origin
-		$TopRightJet.transform = t
-		
-		t = Transform2D()
-		if jet_vector.x < 0:
-			t.x *= 0
-			t.y *= 0
-		else:
-			t.x.x = cos(PI/2) * jet_vector.x * 0.001
-			t.x.y = sin(PI/2) * jet_vector.x * 0.001
-			t.y.x = -sin(PI/2) * jet_vector.x * 0.001
-			t.y.y = cos(PI/2) * jet_vector.x * 0.001
-		t.origin = $UpperLeftJet.transform.origin
-		$UpperLeftJet.transform = t
-		t.origin = $LowerLeftJet.transform.origin
-		$LowerLeftJet.transform = t
-		
-		t = Transform2D(-90, Vector2.ZERO)
-		if jet_vector.x > 0:
-			t.x *= 0
-			t.y *= 0
-		else:
-			t.x.x = cos(-PI/2) * -jet_vector.x * 0.001
-			t.x.y = sin(-PI/2) * -jet_vector.x * 0.001
-			t.y.x = -sin(-PI/2) * -jet_vector.x * 0.001
-			t.y.y = cos(-PI/2) * -jet_vector.x * 0.001
-		t.origin = $UpperRightJet.transform.origin
-		$UpperRightJet.transform = t
-		t.origin = $LowerRightJet.transform.origin
-		$LowerRightJet.transform = t
+	#control jet effects
+	var t = Transform2D()
+	if jet_vector.y > 0:
+		t.x *= 0
+		t.y *= 0
 	else:
-		emit_signal("vector", position, linear_velocity, linear_velocity)
+		t.x *= -jet_vector.y * 0.0025
+		t.y *= -jet_vector.y * 0.0025
+	t.origin = $MainJet.transform.origin
+	$MainJet.transform = t
+	
+	t = Transform2D()
+	if jet_vector.y < 0:
+		t.x *= 0
+		t.y *= 0
+	else:
+		t.x *= jet_vector.y * 0.001
+		t.y *= -jet_vector.y * 0.001
+	t.origin = $TopLeftJet.transform.origin
+	$TopLeftJet.transform = t
+	t.origin = $TopRightJet.transform.origin
+	$TopRightJet.transform = t
+	
+	t = Transform2D()
+	if jet_vector.x < 0 and add_angular_velocity > 0:
+		t.x.x = cos(PI/2) * add_angular_velocity * 0.01
+		t.x.y = sin(PI/2) * add_angular_velocity * 0.01
+		t.y.x = -sin(PI/2) * add_angular_velocity * 0.01
+		t.y.y = cos(PI/2) * add_angular_velocity * 0.01
+	elif jet_vector.x < 0:
+		t.x *= 0
+		t.y *= 0
+	else:
+		t.x.x = cos(PI/2) * (jet_vector.x * 0.001 + add_angular_velocity * 0.01)
+		t.x.y = sin(PI/2) * (jet_vector.x * 0.001 + add_angular_velocity * 0.01)
+		t.y.x = -sin(PI/2) * (jet_vector.x * 0.001 + add_angular_velocity * 0.01)
+		t.y.y = cos(PI/2) * (jet_vector.x * 0.001 + add_angular_velocity * 0.01)
+	t.origin = $UpperLeftJet.transform.origin
+	$UpperLeftJet.transform = t
+	
+	t = Transform2D()
+	if jet_vector.x < 0 and add_angular_velocity < 0:
+		t.x.x = cos(PI/2) * -add_angular_velocity * 0.01
+		t.x.y = sin(PI/2) * -add_angular_velocity * 0.01
+		t.y.x = -sin(PI/2) * -add_angular_velocity * 0.01
+		t.y.y = cos(PI/2) * -add_angular_velocity * 0.01
+	elif jet_vector.x < 0:
+		t.x *= 0
+		t.y *= 0
+	else:
+		t.x.x = cos(PI/2) * (jet_vector.x * 0.001 - add_angular_velocity * 0.01)
+		t.x.y = sin(PI/2) * (jet_vector.x * 0.001 - add_angular_velocity * 0.01)
+		t.y.x = -sin(PI/2) * (jet_vector.x * 0.001 - add_angular_velocity * 0.01)
+		t.y.y = cos(PI/2) * (jet_vector.x * 0.001 - add_angular_velocity * 0.01)
+	t.origin = $LowerLeftJet.transform.origin
+	$LowerLeftJet.transform = t
+	
+	t = Transform2D()
+	if jet_vector.x > 0 and add_angular_velocity < 0:
+		t.x.x = cos(-PI/2) * -add_angular_velocity * 0.01
+		t.x.y = sin(-PI/2) * -add_angular_velocity * 0.01
+		t.y.x = -sin(-PI/2) * -add_angular_velocity * 0.01
+		t.y.y = cos(-PI/2) * -add_angular_velocity * 0.01
+	elif jet_vector.x > 0:
+		t.x *= 0
+		t.y *= 0
+	else:
+		t.x.x = cos(-PI/2) * (-jet_vector.x * 0.001 - add_angular_velocity * 0.01)
+		t.x.y = sin(-PI/2) * (-jet_vector.x * 0.001 - add_angular_velocity * 0.01)
+		t.y.x = -sin(-PI/2) * (-jet_vector.x * 0.001 - add_angular_velocity * 0.01)
+		t.y.y = cos(-PI/2) * (-jet_vector.x * 0.001 - add_angular_velocity * 0.01)
+	t.origin = $UpperRightJet.transform.origin
+	$UpperRightJet.transform = t
+	
+	t = Transform2D()
+	if jet_vector.x > 0 and add_angular_velocity > 0:
+		t.x.x = cos(-PI/2) * add_angular_velocity * 0.01
+		t.x.y = sin(-PI/2) * add_angular_velocity * 0.01
+		t.y.x = -sin(-PI/2) * add_angular_velocity * 0.01
+		t.y.y = cos(-PI/2) * add_angular_velocity * 0.01
+	elif jet_vector.x > 0:
+		t.x *= 0
+		t.y *= 0
+	else:
+		t.x.x = cos(-PI/2) * (-jet_vector.x * 0.001 + add_angular_velocity * 0.01)
+		t.x.y = sin(-PI/2) * (-jet_vector.x * 0.001 + add_angular_velocity * 0.01)
+		t.y.x = -sin(-PI/2) * (-jet_vector.x * 0.001 + add_angular_velocity * 0.01)
+		t.y.y = cos(-PI/2) * (-jet_vector.x * 0.001 + add_angular_velocity * 0.01)
+	t.origin = $LowerRightJet.transform.origin
+	$LowerRightJet.transform = t
+	
 	mouse_delta = Vector2()
 
 func _input(event):
