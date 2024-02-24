@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://ccyt44toeiksg"]
+[gd_scene load_steps=20 format=3 uid="uid://ccyt44toeiksg"]
 
 [ext_resource type="PackedScene" uid="uid://b68umguhxojc4" path="res://Player.tscn" id="1_sqd3l"]
 [ext_resource type="Script" path="res://DebugText.gd" id="2"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://deo027oklluei" path="res://bg-fore.png" id="10_ukf5i"]
 [ext_resource type="Texture2D" uid="uid://cu0f3vei0iwys" path="res://chain_link_1.png" id="12_artjr"]
 [ext_resource type="Texture2D" uid="uid://gjt23p0dv2km" path="res://chain_link_2.png" id="13_clq70"]
+[ext_resource type="PackedScene" uid="uid://cgago8t7hpva8" path="res://hammer.tscn" id="14_lphed"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6bvuu"]
 size = Vector2(12, 4)
@@ -22,6 +23,12 @@ size = Vector2(11.625, 4.5)
 
 [sub_resource type="RectangleShape2D" id="3"]
 size = Vector2(49, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_luryw"]
+size = Vector2(57, 1429)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5wdrx"]
+size = Vector2(2253, 80)
 
 [node name="Main" type="Node2D"]
 
@@ -261,6 +268,32 @@ texture = ExtResource("10_ukf5i")
 position = Vector2(224, 224)
 zoom = Vector2(1.9, 1.9)
 script = ExtResource("3")
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="Left wall" type="StaticBody2D" parent="Walls"]
+position = Vector2(-317, 214)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Left wall"]
+position = Vector2(18.5, -503.5)
+shape = SubResource("RectangleShape2D_luryw")
+
+[node name="Right wall" type="StaticBody2D" parent="Walls"]
+position = Vector2(730, 234)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Right wall"]
+position = Vector2(23, -524)
+shape = SubResource("RectangleShape2D_luryw")
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(335, 437)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+position = Vector2(-9.5, 30)
+shape = SubResource("RectangleShape2D_5wdrx")
+
+[node name="Hammer" parent="." instance=ExtResource("14_lphed")]
+position = Vector2(244, 325)
 
 [connection signal="dash" from="Player" to="DebugLayer/DebugText" method="_on_Player_dash"]
 [connection signal="debug" from="Player" to="DebugLayer/DebugText2" method="_on_player_debug"]

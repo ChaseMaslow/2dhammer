@@ -19,6 +19,9 @@ const TILT_ANGLE_DEGREES = 30
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 var in_control = true
+var equipped = false
+#var pickup_available = false
+#var pickup_item : CollisionObject2D
 var dash_ready = true
 var dashing = false
 var mouse_delta : Vector2
@@ -28,6 +31,7 @@ signal speed(speed)
 signal dash()
 signal vector(pos, velocity, addvelocity)
 signal debug(info)
+signal weapon_move(pos)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -75,7 +79,7 @@ func _integrate_forces(_state):
 	linear_velocity += add_velocity
 	angular_velocity += add_angular_velocity
 	
-	emit_signal("debug", str(jet_vector.x) + "\n" + str(jet_vector.y))
+	#emit_signal("debug", str(jet_vector.x) + "\n" + str(jet_vector.y))
 		
 	#control jet effects
 	var t = Transform2D()
@@ -184,6 +188,28 @@ func _input(event):
 			set_linear_damp(control_linear_damp)
 			set_angular_damp(control_angular_damp)
 	
+	if event.is_action_pressed("drop"):
+		if in_control and equipped:
+			$WeaponJoint.queue_free()
+			equipped = false
+	
+	if event.is_action_pressed("pickup"):
+		if in_control and not equipped and $PickupArea.has_overlapping_bodies():
+			var pickupitem = null
+			for item in $PickupArea.get_overlapping_bodies():
+				if item.name == "Hammer":
+					pickupitem = item
+					break
+			if pickupitem != null:
+				var newjoint = load("res://WeaponJoint.tscn").instantiate()
+				newjoint.node_a = NodePath("..")
+				newjoint.node_b = NodePath("../../" + pickupitem.name)
+				var dif = position - pickupitem.position
+				emit_signal("debug", str(dif))
+				emit_signal("weapon_move", position)
+				add_child(newjoint)
+				equipped = true
+			
 	if event.is_action_pressed("exit"):
 		get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
 		get_tree().quit()

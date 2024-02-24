@@ -1,0 +1,48 @@
+[gd_scene load_steps=7 format=3 uid="uid://cgago8t7hpva8"]
+
+[ext_resource type="Texture2D" uid="uid://ubfifa21byjj" path="res://hammer.png" id="1_mg1qx"]
+[ext_resource type="Script" path="res://Weapon.gd" id="1_wi6l3"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_atqcr"]
+friction = 0.65
+bounce = 0.1
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_h8aei"]
+radius = 10.1
+height = 41.4
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i4vem"]
+size = Vector2(8, 76)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_osr51"]
+size = Vector2(40, 92)
+
+[node name="Hammer" type="RigidBody2D"]
+show_behind_parent = true
+physics_material_override = SubResource("PhysicsMaterial_atqcr")
+center_of_mass_mode = 1
+center_of_mass = Vector2(0, 82)
+can_sleep = false
+script = ExtResource("1_wi6l3")
+
+[node name="HeadCollider" type="CollisionShape2D" parent="."]
+position = Vector2(0, 82)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_h8aei")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.17909, 0.17909)
+texture = ExtResource("1_mg1qx")
+
+[node name="PoleCollider" type="CollisionShape2D" parent="."]
+position = Vector2(0, 34)
+shape = SubResource("RectangleShape2D_i4vem")
+
+[node name="Area" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area"]
+position = Vector2(0, 46)
+shape = SubResource("RectangleShape2D_osr51")
+
+[connection signal="area_entered" from="Area" to="." method="_on_area_area_entered"]
+[connection signal="area_exited" from="Area" to="." method="_on_area_area_exited"]

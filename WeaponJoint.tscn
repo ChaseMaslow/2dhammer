@@ -1,0 +1,4 @@
+[gd_scene format=3 uid="uid://l054o7gwk5qq"]
+
+[node name="WeaponJoint" type="PinJoint2D"]
+bias = 0.9

@@ -1,8 +1,7 @@
-[gd_scene load_steps=16 format=3 uid="uid://b68umguhxojc4"]
+[gd_scene load_steps=14 format=3 uid="uid://b68umguhxojc4"]
 
 [ext_resource type="Script" path="res://Player.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://dtt71ieqvwkik" path="res://pod.png" id="2_3rhr1"]
-[ext_resource type="Texture2D" uid="uid://ubfifa21byjj" path="res://hammer.png" id="3_d3uw7"]
 [ext_resource type="Texture2D" uid="uid://c4kxvb3spmd1k" path="res://jetflame/frame0000.png" id="4_gcu60"]
 [ext_resource type="Texture2D" uid="uid://didso24dqdwde" path="res://jetflame/frame0001.png" id="5_tlany"]
 [ext_resource type="Texture2D" uid="uid://c2mop6hni4u8d" path="res://jetflame/frame0002.png" id="6_3owii"]
@@ -15,13 +14,8 @@
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(42, 43)
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_atqcr"]
-friction = 0.65
-bounce = 0.1
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_h8aei"]
-radius = 10.1
-height = 41.4
+[sub_resource type="CircleShape2D" id="CircleShape2D_wxgx5"]
+radius = 54.231
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_puxqw"]
 animations = [{
@@ -78,46 +72,16 @@ polygon = PackedVector2Array(-25, -25, 0, -34, 25, -25, 25, 25, -25, 25)
 wait_time = 2.0
 one_shot = true
 
-[node name="PinJoint2D" type="PinJoint2D" parent="."]
-node_a = NodePath("..")
-node_b = NodePath("../Hammer")
-bias = 0.9
-
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -1
 position = Vector2(-0.04, 12)
 scale = Vector2(0.162, 0.162)
 texture = ExtResource("2_3rhr1")
 
-[node name="Hammer" type="RigidBody2D" parent="."]
-show_behind_parent = true
-position = Vector2(0, 67)
-physics_material_override = SubResource("PhysicsMaterial_atqcr")
-center_of_mass_mode = 1
-center_of_mass = Vector2(0, 15)
-can_sleep = false
+[node name="PickupArea" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hammer"]
-position = Vector2(0, 15.265)
-rotation = 1.5708
-shape = SubResource("CapsuleShape2D_h8aei")
-
-[node name="Polygon2D" type="Polygon2D" parent="Hammer"]
-visible = false
-position = Vector2(0, 8)
-polygon = PackedVector2Array(-24, -8, 24, -8, 29, 8, 24, 24, -24, 24, -30, 8)
-
-[node name="Polygon2D2" type="Polygon2D" parent="Hammer"]
-visible = false
-position = Vector2(-0.499996, 9.14286)
-scale = Vector2(0.6875, 1.14286)
-color = Color(0, 0, 0, 1)
-polygon = PackedVector2Array(8, -8, -8, -8, -8, -64, 8, -64)
-
-[node name="Sprite2D" type="Sprite2D" parent="Hammer"]
-position = Vector2(0, -67)
-scale = Vector2(0.17909, 0.17909)
-texture = ExtResource("3_d3uw7")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickupArea"]
+shape = SubResource("CircleShape2D_wxgx5")
 
 [node name="MainJet" type="AnimatedSprite2D" parent="."]
 z_index = -1

@@ -1,8 +1,9 @@
-Node2D
-PinJoint2D
-StaticBody2D
-Sprite2D
 CollisionShape2D
+Area2D
+Node2D
+StaticBody2D
+PinJoint2D
+Sprite2D
 RigidBody2D
 Node
 Label
