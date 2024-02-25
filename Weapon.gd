@@ -12,7 +12,7 @@ func _process(delta):
 
 
 func _on_weapon_move(pos):
-	position = pos
+	position = pos.position
 
 
 func _on_area_area_entered(area):

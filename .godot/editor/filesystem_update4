@@ -1,5 +1,6 @@
 res://default_env.tres
 res://Main.tscn
 res://Player.tscn
-res://WeaponJoint.tscn
+res://sword.tscn
+res://Dummy.gd
 res://hammer.tscn

@@ -21,7 +21,7 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var in_control = true
 var equipped = false
 #var pickup_available = false
-#var pickup_item : CollisionObject2D
+var pickup_item
 var dash_ready = true
 var dashing = false
 var mouse_delta : Vector2
@@ -173,6 +173,14 @@ func _integrate_forces(_state):
 	$LowerRightJet.transform = t
 	
 	mouse_delta = Vector2()
+	
+	if pickup_item != null and equipped == false:
+				var newjoint = load("res://WeaponJoint.tscn").instantiate()
+				emit_signal("weapon_move", self)
+				newjoint.node_a = NodePath("..")
+				newjoint.node_b = NodePath("../../" + pickup_item.name)
+				add_child(newjoint)
+				equipped = true
 
 func _input(event):
 	if event is InputEventMouseMotion:
@@ -192,23 +200,15 @@ func _input(event):
 		if in_control and equipped:
 			$WeaponJoint.queue_free()
 			equipped = false
+			pickup_item = null
 	
 	if event.is_action_pressed("pickup"):
 		if in_control and not equipped and $PickupArea.has_overlapping_bodies():
-			var pickupitem = null
 			for item in $PickupArea.get_overlapping_bodies():
-				if item.name == "Hammer":
-					pickupitem = item
+				if item.name == "Hammer" or item.name == "Sword":
+					pickup_item = item
 					break
-			if pickupitem != null:
-				var newjoint = load("res://WeaponJoint.tscn").instantiate()
-				newjoint.node_a = NodePath("..")
-				newjoint.node_b = NodePath("../../" + pickupitem.name)
-				var dif = position - pickupitem.position
-				emit_signal("debug", str(dif))
-				emit_signal("weapon_move", position)
-				add_child(newjoint)
-				equipped = true
+			
 			
 	if event.is_action_pressed("exit"):
 		get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
