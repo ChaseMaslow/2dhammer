@@ -10,11 +10,11 @@ friction = 0.2
 radius = 10.1
 height = 41.4
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_i4vem"]
-size = Vector2(8, 127)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m5y30"]
+size = Vector2(8, 76)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_osr51"]
-size = Vector2(40, 127)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3js2s"]
+size = Vector2(42, 96)
 
 [node name="Hammer" type="RigidBody2D"]
 show_behind_parent = true
@@ -36,13 +36,13 @@ texture = ExtResource("1_mg1qx")
 
 [node name="PoleCollider" type="CollisionShape2D" parent="."]
 position = Vector2(0, 34)
-shape = SubResource("RectangleShape2D_i4vem")
+shape = SubResource("RectangleShape2D_m5y30")
 
 [node name="Area" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area"]
-position = Vector2(0, 46)
-shape = SubResource("RectangleShape2D_osr51")
+position = Vector2(0, 44)
+shape = SubResource("RectangleShape2D_3js2s")
 
 [connection signal="area_entered" from="Area" to="." method="_on_area_area_entered"]
 [connection signal="area_exited" from="Area" to="." method="_on_area_area_exited"]

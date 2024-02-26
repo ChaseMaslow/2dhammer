@@ -22,7 +22,8 @@ func _integrate_forces(state):
 		collision_pos = state.get_contact_local_position(0)
 		collision_force = ceilf(((state.get_linear_velocity() - last_velocity) / state.get_inverse_mass() / state.get_step()).length() / 1000)
 		#collision_force = state.get_contact_impulse(0).length()
-		if state.get_contact_collider_object(0).name == "Sword":
+		var obj = state.get_contact_collider_object(0)
+		if obj is Weapon and obj.sharp:
 			var norm = state.get_contact_local_normal(0).orthogonal()
 			var slice_force = ceilf((absf(state.get_contact_collider_object(0).linear_velocity.dot(norm) - last_velocity.dot(norm)) / state.get_inverse_mass() / state.get_step()) / 2800)
 			if (slice_force > collision_force):

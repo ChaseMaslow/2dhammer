@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3 uid="uid://dov6q8pb176ns"]
+
+[ext_resource type="Script" path="res://Weapon.gd" id="1_fbkas"]
+[ext_resource type="Texture2D" uid="uid://dexhxka6bg3cq" path="res://sword2.png" id="2_76o24"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_atqcr"]
+friction = 0.2
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fgf0l"]
+size = Vector2(20, 120)
+
+[node name="Sword2" type="RigidBody2D"]
+show_behind_parent = true
+mass = 0.23
+physics_material_override = SubResource("PhysicsMaterial_atqcr")
+center_of_mass_mode = 1
+center_of_mass = Vector2(0, 30)
+can_sleep = false
+script = ExtResource("1_fbkas")
+sharp = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.365, 0.365)
+texture = ExtResource("2_76o24")
+
+[node name="Collider" type="CollisionPolygon2D" parent="."]
+position = Vector2(0, 43)
+scale = Vector2(1.73, 1.73)
+polygon = PackedVector2Array(4, -30, 4.04624, 38.1503, -1, 28, -4, 15, -5, -1, -5, -30)
+
+[node name="Area" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area"]
+position = Vector2(0, 51)
+shape = SubResource("RectangleShape2D_fgf0l")
+
+[connection signal="area_entered" from="Area" to="." method="_on_area_area_entered"]
+[connection signal="area_exited" from="Area" to="." method="_on_area_area_exited"]

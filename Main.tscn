@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://ccyt44toeiksg"]
+[gd_scene load_steps=22 format=3 uid="uid://ccyt44toeiksg"]
 
 [ext_resource type="PackedScene" uid="uid://b68umguhxojc4" path="res://Player.tscn" id="1_sqd3l"]
 [ext_resource type="Script" path="res://DebugText.gd" id="2"]
@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://gjt23p0dv2km" path="res://chain_link_2.png" id="13_clq70"]
 [ext_resource type="PackedScene" uid="uid://cgago8t7hpva8" path="res://hammer.tscn" id="14_lphed"]
 [ext_resource type="PackedScene" uid="uid://cdoqw6hbpcr4" path="res://sword.tscn" id="14_u3501"]
+[ext_resource type="PackedScene" uid="uid://dov6q8pb176ns" path="res://sword2.tscn" id="15_vf282"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6bvuu"]
 size = Vector2(12, 4)
@@ -294,10 +295,13 @@ position = Vector2(-9.5, 30)
 shape = SubResource("RectangleShape2D_5wdrx")
 
 [node name="Sword" parent="." instance=ExtResource("14_u3501")]
-position = Vector2(170, 317)
+position = Vector2(170, 296)
 
 [node name="Hammer" parent="." instance=ExtResource("14_lphed")]
 position = Vector2(244, 325)
+
+[node name="Sword2" parent="." instance=ExtResource("15_vf282")]
+position = Vector2(355, 359)
 
 [connection signal="dash" from="Player" to="DebugLayer/DebugText" method="_on_Player_dash"]
 [connection signal="debug" from="Player" to="DebugLayer/DebugText2" method="_on_player_debug"]

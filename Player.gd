@@ -32,6 +32,7 @@ signal dash()
 signal vector(pos, velocity, addvelocity)
 signal debug(info)
 signal weapon_move(pos)
+signal weapon_flip()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -202,10 +203,14 @@ func _input(event):
 			equipped = false
 			pickup_item = null
 	
+	if event.is_action_pressed("flip"):
+		if in_control and equipped:
+			emit_signal("weapon_flip")
+	
 	if event.is_action_pressed("pickup"):
 		if in_control and not equipped and $PickupArea.has_overlapping_bodies():
 			for item in $PickupArea.get_overlapping_bodies():
-				if item.name == "Hammer" or item.name == "Sword":
+				if item.name == "Hammer" or item.name == "Sword" or item.name == "Sword2":
 					pickup_item = item
 					break
 			
