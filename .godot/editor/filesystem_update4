@@ -1,9 +1,11 @@
 res://default_env.tres
 res://Main.tscn
+res://enemyAnim.tres
 res://Player.tscn
 res://sword.tscn
-res://Dummy.gd
-res://hammer.tscn
 res://sword2.tscn
+res://hammer.tscn
+res://Damageable.gd
 res://Player.gd
-res://Weapon.gd
+res://Enemy.gd
+res://HurtBox.gd

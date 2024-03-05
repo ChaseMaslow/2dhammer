@@ -1,7 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://b68umguhxojc4"]
+[gd_scene load_steps=16 format=3 uid="uid://b68umguhxojc4"]
 
 [ext_resource type="Script" path="res://Player.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://dtt71ieqvwkik" path="res://pod.png" id="2_3rhr1"]
+[ext_resource type="PackedScene" uid="uid://1rwl3ap70c7p" path="res://SplashText.tscn" id="2_ohevq"]
 [ext_resource type="Texture2D" uid="uid://c4kxvb3spmd1k" path="res://jetflame/frame0000.png" id="4_gcu60"]
 [ext_resource type="Texture2D" uid="uid://didso24dqdwde" path="res://jetflame/frame0001.png" id="5_tlany"]
 [ext_resource type="Texture2D" uid="uid://c2mop6hni4u8d" path="res://jetflame/frame0002.png" id="6_3owii"]
@@ -16,6 +17,9 @@ size = Vector2(42, 43)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wxgx5"]
 radius = 54.231
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yeavt"]
+size = Vector2(50, 71)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_puxqw"]
 animations = [{
@@ -52,12 +56,15 @@ animations = [{
 [node name="Player" type="RigidBody2D"]
 position = Vector2(320, 192)
 mass = 3.06122
+max_contacts_reported = 1
+contact_monitor = true
 linear_damp = 4.0
 script = ExtResource("1")
 max_speed = 120
 control_linear_damp = 8
 control_angular_damp = 8
 gravity_resist = 12
+SplashObj = ExtResource("2_ohevq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 0.5)
@@ -82,6 +89,12 @@ texture = ExtResource("2_3rhr1")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PickupArea"]
 shape = SubResource("CircleShape2D_wxgx5")
+
+[node name="HitArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea"]
+position = Vector2(0, 3.5)
+shape = SubResource("RectangleShape2D_yeavt")
 
 [node name="MainJet" type="AnimatedSprite2D" parent="."]
 z_index = -1
@@ -155,4 +168,7 @@ frame_progress = 0.801249
 speed_scale = 5.0
 flip_h = true
 
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="DashTimer" to="." method="_on_DashTimer_timeout"]
+[connection signal="area_entered" from="HitArea" to="." method="_on_area_entered"]
+[connection signal="area_exited" from="HitArea" to="." method="_on_area_exited"]

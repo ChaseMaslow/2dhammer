@@ -1,0 +1,46 @@
+[gd_resource type="SpriteFrames" load_steps=10 format=3 uid="uid://dbxque2ugwi4s"]
+
+[ext_resource type="Texture2D" uid="uid://brkrah7wqh4rd" path="res://enemy/frame0001.png" id="1_sv4mw"]
+[ext_resource type="Texture2D" uid="uid://ckb1bow3sdsm5" path="res://enemy/frame0002.png" id="2_f2gjf"]
+[ext_resource type="Texture2D" uid="uid://crumkyblsthqu" path="res://enemy/frame0003.png" id="3_dri0b"]
+[ext_resource type="Texture2D" uid="uid://djde7algcv8bq" path="res://enemy/frame0004.png" id="4_v0rex"]
+[ext_resource type="Texture2D" uid="uid://c0bsvvifeww2" path="res://enemy/frame0005.png" id="5_5ewn7"]
+[ext_resource type="Texture2D" uid="uid://wuik6dkqwyaq" path="res://enemy/frame0006.png" id="6_h0oyb"]
+[ext_resource type="Texture2D" uid="uid://bqs4o4d3idcuh" path="res://enemy/frame0007.png" id="7_sispw"]
+[ext_resource type="Texture2D" uid="uid://b2wkr6hagl41m" path="res://enemy/frame0008.png" id="8_v1k0s"]
+[ext_resource type="Texture2D" uid="uid://cogr14nu8s5up" path="res://enemy/frame0009.png" id="9_8oqsq"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_sv4mw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_f2gjf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_dri0b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_v0rex")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_5ewn7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_h0oyb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_sispw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_v1k0s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_8oqsq")
+}],
+"loop": true,
+"name": &"default",
+"speed": 14.0
+}]

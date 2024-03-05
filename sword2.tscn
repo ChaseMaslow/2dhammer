@@ -4,17 +4,17 @@
 [ext_resource type="Texture2D" uid="uid://dexhxka6bg3cq" path="res://sword2.png" id="2_76o24"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_atqcr"]
-friction = 0.2
+friction = 0.15
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fgf0l"]
 size = Vector2(20, 120)
 
 [node name="Sword2" type="RigidBody2D"]
 show_behind_parent = true
-mass = 0.23
+mass = 0.77
 physics_material_override = SubResource("PhysicsMaterial_atqcr")
 center_of_mass_mode = 1
-center_of_mass = Vector2(0, 30)
+center_of_mass = Vector2(0, 60)
 can_sleep = false
 script = ExtResource("1_fbkas")
 sharp = true

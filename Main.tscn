@@ -1,11 +1,11 @@
-[gd_scene load_steps=22 format=3 uid="uid://ccyt44toeiksg"]
+[gd_scene load_steps=28 format=3 uid="uid://ccyt44toeiksg"]
 
 [ext_resource type="PackedScene" uid="uid://b68umguhxojc4" path="res://Player.tscn" id="1_sqd3l"]
 [ext_resource type="Script" path="res://DebugText.gd" id="2"]
 [ext_resource type="Script" path="res://Camera2D.gd" id="3"]
 [ext_resource type="Script" path="res://DebugVector.gd" id="3_ctnmf"]
 [ext_resource type="Script" path="res://DebugText2.gd" id="3_kfe6f"]
-[ext_resource type="Script" path="res://Dummy.gd" id="4_m84gs"]
+[ext_resource type="Script" path="res://Damageable.gd" id="4_m84gs"]
 [ext_resource type="PackedScene" uid="uid://1rwl3ap70c7p" path="res://SplashText.tscn" id="5_nfn67"]
 [ext_resource type="Texture2D" uid="uid://dsdvcxk4g4yi3" path="res://dummy.png" id="6_expm7"]
 [ext_resource type="Texture2D" uid="uid://bm2he8lqutgef" path="res://bg-back.png" id="8_jmuxi"]
@@ -16,6 +16,9 @@
 [ext_resource type="PackedScene" uid="uid://cgago8t7hpva8" path="res://hammer.tscn" id="14_lphed"]
 [ext_resource type="PackedScene" uid="uid://cdoqw6hbpcr4" path="res://sword.tscn" id="14_u3501"]
 [ext_resource type="PackedScene" uid="uid://dov6q8pb176ns" path="res://sword2.tscn" id="15_vf282"]
+[ext_resource type="SpriteFrames" uid="uid://dbxque2ugwi4s" path="res://enemyAnim.tres" id="17_2dh3c"]
+[ext_resource type="Script" path="res://Enemy.gd" id="17_7f3va"]
+[ext_resource type="Script" path="res://HurtBox.gd" id="19_7ravl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6bvuu"]
 size = Vector2(12, 4)
@@ -26,11 +29,19 @@ size = Vector2(11.625, 4.5)
 [sub_resource type="RectangleShape2D" id="3"]
 size = Vector2(49, 64)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4vjue"]
+size = Vector2(54, 68)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_luryw"]
 size = Vector2(57, 1429)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5wdrx"]
 size = Vector2(2253, 80)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0j36t"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ufnp0"]
+radius = 22.0
 
 [node name="Main" type="Node2D"]
 
@@ -234,6 +245,7 @@ max_contacts_reported = 1
 contact_monitor = true
 linear_damp = 1.0
 script = ExtResource("4_m84gs")
+mortal = false
 SplashObj = ExtResource("5_nfn67")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Target/Dummy"]
@@ -248,6 +260,11 @@ z_index = -5
 position = Vector2(-0.465, 1.08)
 scale = Vector2(0.130208, 0.130208)
 texture = ExtResource("6_expm7")
+
+[node name="HitArea" type="Area2D" parent="Target/Dummy"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Target/Dummy/HitArea"]
+shape = SubResource("RectangleShape2D_4vjue")
 
 [node name="Background" type="Node2D" parent="."]
 position = Vector2(224, 224)
@@ -303,9 +320,41 @@ position = Vector2(244, 325)
 [node name="Sword2" parent="." instance=ExtResource("15_vf282")]
 position = Vector2(355, 359)
 
+[node name="Enemy" type="RigidBody2D" parent="." node_paths=PackedStringArray("target")]
+position = Vector2(175, 92)
+max_contacts_reported = 1
+contact_monitor = true
+script = ExtResource("17_7f3va")
+target = NodePath("../Player")
+SplashObj = ExtResource("5_nfn67")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Enemy"]
+position = Vector2(0.815, 2.085)
+scale = Vector2(0.142055, 0.142055)
+sprite_frames = ExtResource("17_2dh3c")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy"]
+scale = Vector2(2.13963, 2.13963)
+shape = SubResource("CircleShape2D_0j36t")
+
+[node name="HurtArea" type="Area2D" parent="Enemy"]
+script = ExtResource("19_7ravl")
+damage = 10.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy/HurtArea"]
+shape = SubResource("CircleShape2D_ufnp0")
+
+[node name="HurtTimer" type="Timer" parent="Enemy/HurtArea"]
+autostart = true
+
 [connection signal="dash" from="Player" to="DebugLayer/DebugText" method="_on_Player_dash"]
 [connection signal="debug" from="Player" to="DebugLayer/DebugText2" method="_on_player_debug"]
 [connection signal="speed" from="Player" to="DebugLayer/DebugText" method="_on_Player_speed"]
 [connection signal="vector" from="Player" to="DebugVector" method="_on_Player_vector"]
 [connection signal="timeout" from="DebugLayer/DebugText/Timer" to="DebugLayer/DebugText" method="_on_Timer_timeout"]
 [connection signal="body_entered" from="Target/Dummy" to="Target/Dummy" method="_on_body_entered"]
+[connection signal="area_entered" from="Target/Dummy/HitArea" to="Target/Dummy" method="_on_area_entered"]
+[connection signal="area_exited" from="Target/Dummy/HitArea" to="Target/Dummy" method="_on_area_exited"]
+[connection signal="body_entered" from="Enemy" to="Enemy" method="_on_body_entered"]
+[connection signal="timeout" from="Enemy/HurtArea/HurtTimer" to="Enemy/HurtArea" method="_on_timer_timeout"]

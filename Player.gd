@@ -1,5 +1,4 @@
-extends RigidBody2D
-
+extends Damageable
 
 @export var base_speed = 3
 @export var max_speed = 100
@@ -43,10 +42,11 @@ func _ready():
 #func _process(_delta):
 #	emit_signal("debug", transform)
 
-func _integrate_forces(_state):
+func _integrate_forces(state):
+	on_integrate_forces(state) 
 	var add_velocity = Vector2.ZERO
 	var add_angular_velocity = 0
-	if in_control == true:
+	if in_control:
 		# make linear velocity more like the requested velocity
 #		var requested_velocity = (mouse_delta * base_speed)
 #		var add_velocity = (requested_velocity - get_linear_velocity()).limit_length(max_speed)
@@ -187,15 +187,15 @@ func _input(event):
 	if event is InputEventMouseMotion:
 		mouse_delta = event.relative
 	
-	if event.is_action_pressed("freefall"):
-		if in_control == true:
-			in_control = false
-			set_linear_damp(0)
-			set_angular_damp(0)
-		else:
-			in_control = true
-			set_linear_damp(control_linear_damp)
-			set_angular_damp(control_angular_damp)
+	#if event.is_action_pressed("freefall"):
+		#if in_control == true:
+			#in_control = false
+			#set_linear_damp(0)
+			#set_angular_damp(0)
+		#else:
+			#in_control = true
+			#set_linear_damp(control_linear_damp)
+			#set_angular_damp(control_angular_damp)
 	
 	if event.is_action_pressed("drop"):
 		if in_control and equipped:
@@ -226,3 +226,10 @@ func _on_DashTimer_timeout():
 		$DashTimer.start(dash_cooldown)
 	else:
 		dash_ready = true
+
+func _on_body_entered(body):
+	on_body_entered(body)
+	if dead:
+		in_control = false
+		set_linear_damp(0)
+		set_angular_damp(0)
