@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=3 uid="uid://c37j6rwhvb6n3"]
+
+[ext_resource type="Script" path="res://Enemy.gd" id="1_8ff8y"]
+[ext_resource type="PackedScene" uid="uid://1rwl3ap70c7p" path="res://SplashText.tscn" id="2_3kvfc"]
+[ext_resource type="SpriteFrames" uid="uid://dbxque2ugwi4s" path="res://enemyAnim.tres" id="3_xnwwb"]
+[ext_resource type="Script" path="res://HurtBox.gd" id="4_xdn8s"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0j36t"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ufnp0"]
+radius = 22.0
+
+[node name="Enemy" type="RigidBody2D" node_paths=PackedStringArray("target")]
+position = Vector2(175, 92)
+max_contacts_reported = 1
+contact_monitor = true
+script = ExtResource("1_8ff8y")
+target = NodePath("")
+SplashObj = ExtResource("2_3kvfc")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0.815, 2.085)
+scale = Vector2(0.142055, 0.142055)
+sprite_frames = ExtResource("3_xnwwb")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(2.13963, 2.13963)
+shape = SubResource("CircleShape2D_0j36t")
+
+[node name="HurtArea" type="Area2D" parent="."]
+script = ExtResource("4_xdn8s")
+damage = 10.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtArea"]
+shape = SubResource("CircleShape2D_ufnp0")
+
+[node name="HurtTimer" type="Timer" parent="HurtArea"]
+autostart = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="HurtArea/HurtTimer" to="HurtArea" method="_on_timer_timeout"]

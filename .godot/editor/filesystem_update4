@@ -5,7 +5,3 @@ res://Player.tscn
 res://sword.tscn
 res://sword2.tscn
 res://hammer.tscn
-res://Damageable.gd
-res://Player.gd
-res://Enemy.gd
-res://HurtBox.gd

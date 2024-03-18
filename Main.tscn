@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://ccyt44toeiksg"]
+[gd_scene load_steps=26 format=3 uid="uid://ccyt44toeiksg"]
 
 [ext_resource type="PackedScene" uid="uid://b68umguhxojc4" path="res://Player.tscn" id="1_sqd3l"]
 [ext_resource type="Script" path="res://DebugText.gd" id="2"]
@@ -16,9 +16,8 @@
 [ext_resource type="PackedScene" uid="uid://cgago8t7hpva8" path="res://hammer.tscn" id="14_lphed"]
 [ext_resource type="PackedScene" uid="uid://cdoqw6hbpcr4" path="res://sword.tscn" id="14_u3501"]
 [ext_resource type="PackedScene" uid="uid://dov6q8pb176ns" path="res://sword2.tscn" id="15_vf282"]
-[ext_resource type="SpriteFrames" uid="uid://dbxque2ugwi4s" path="res://enemyAnim.tres" id="17_2dh3c"]
-[ext_resource type="Script" path="res://Enemy.gd" id="17_7f3va"]
-[ext_resource type="Script" path="res://HurtBox.gd" id="19_7ravl"]
+[ext_resource type="PackedScene" uid="uid://c37j6rwhvb6n3" path="res://enemy.tscn" id="17_7akbg"]
+[ext_resource type="Script" path="res://EnemyManager.gd" id="18_tajs1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6bvuu"]
 size = Vector2(12, 4)
@@ -38,10 +37,11 @@ size = Vector2(57, 1429)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5wdrx"]
 size = Vector2(2253, 80)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_0j36t"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_ufnp0"]
-radius = 22.0
+[sub_resource type="Curve2D" id="Curve2D_5eldu"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -367, 276, 0, 0, 0, 0, -407, 188, 0, 0, 0, 0, -407, -68, 0, 0, 0, 0, 129, -116, 0, 0, 0, 0, 433, -100, 0, 0, 0, 0, 497, 84, 0, 0, 0, 0, 465, 268)
+}
+point_count = 7
 
 [node name="Main" type="Node2D"]
 
@@ -320,32 +320,21 @@ position = Vector2(244, 325)
 [node name="Sword2" parent="." instance=ExtResource("15_vf282")]
 position = Vector2(355, 359)
 
-[node name="Enemy" type="RigidBody2D" parent="." node_paths=PackedStringArray("target")]
+[node name="EnemyManager" type="Node2D" parent="." node_paths=PackedStringArray("player")]
 position = Vector2(175, 92)
-max_contacts_reported = 1
-contact_monitor = true
-script = ExtResource("17_7f3va")
-target = NodePath("../Player")
-SplashObj = ExtResource("5_nfn67")
+script = ExtResource("18_tajs1")
+enemy = ExtResource("17_7akbg")
+player = NodePath("../Player")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Enemy"]
-position = Vector2(0.815, 2.085)
-scale = Vector2(0.142055, 0.142055)
-sprite_frames = ExtResource("17_2dh3c")
-autoplay = "default"
+[node name="SpawnPath" type="Path2D" parent="EnemyManager"]
+curve = SubResource("Curve2D_5eldu")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy"]
-scale = Vector2(2.13963, 2.13963)
-shape = SubResource("CircleShape2D_0j36t")
+[node name="SpawnLocation" type="PathFollow2D" parent="EnemyManager/SpawnPath"]
+position = Vector2(-367, 276)
+rotation = -1.99742
 
-[node name="HurtArea" type="Area2D" parent="Enemy"]
-script = ExtResource("19_7ravl")
-damage = 10.0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy/HurtArea"]
-shape = SubResource("CircleShape2D_ufnp0")
-
-[node name="HurtTimer" type="Timer" parent="Enemy/HurtArea"]
+[node name="Timer" type="Timer" parent="EnemyManager"]
+wait_time = 5.0
 autostart = true
 
 [connection signal="dash" from="Player" to="DebugLayer/DebugText" method="_on_Player_dash"]
@@ -356,5 +345,4 @@ autostart = true
 [connection signal="body_entered" from="Target/Dummy" to="Target/Dummy" method="_on_body_entered"]
 [connection signal="area_entered" from="Target/Dummy/HitArea" to="Target/Dummy" method="_on_area_entered"]
 [connection signal="area_exited" from="Target/Dummy/HitArea" to="Target/Dummy" method="_on_area_exited"]
-[connection signal="body_entered" from="Enemy" to="Enemy" method="_on_body_entered"]
-[connection signal="timeout" from="Enemy/HurtArea/HurtTimer" to="Enemy/HurtArea" method="_on_timer_timeout"]
+[connection signal="timeout" from="EnemyManager/Timer" to="EnemyManager" method="_on_timer_timeout"]
